@@ -8,13 +8,13 @@
     "demo": "",
     "image": ""
   },
-  {
-    "id": "fake-news-bert",
-    "title": "Fake News Detection (BERT)",
-    "summary": "Fine-tuned BERT model to detect fake news articles.",
-    "stack": ["Hugging Face", "Transformers", "PyTorch", "FastAPI"],
-    "github": "https://github.com/your-username/fake-news-bert",
-    "demo": "",
-    "image": ""
-  }
+     {
+            "id": "ai-art-generator",
+            "title": "AI Art Generator",
+            "summary": "A text-to-image AI that turns any description into digital art.",
+            "stack": ["Streamlit, Diffusers, PyTorch, Transformers"],
+            "github": "https://github.com/your-username/fake-news-bert",
+            "demo": "",
+            "image": ""
+        }
 ]
