@@ -1,0 +1,20 @@
+[
+  {
+    "id": "skin-cancer-cnn",
+    "title": "Skin Cancer Detection (CNN)",
+    "summary": "A convolutional neural network to classify skin lesion images.",
+    "stack": ["TensorFlow", "Keras", "Python", "FastAPI", "Docker"],
+    "github": "https://github.com/your-username/skin-cancer-cnn",
+    "demo": "",
+    "image": ""
+  },
+  {
+    "id": "fake-news-bert",
+    "title": "Fake News Detection (BERT)",
+    "summary": "Fine-tuned BERT model to detect fake news articles.",
+    "stack": ["Hugging Face", "Transformers", "PyTorch", "FastAPI"],
+    "github": "https://github.com/your-username/fake-news-bert",
+    "demo": "",
+    "image": ""
+  }
+]

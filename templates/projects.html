@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Projects</h2>
+<div class="grid">
+  {% for p in projects %}
+  <article class="card">
+    <h3>{{ p.title }}</h3>
+    <p>{{ p.summary }}</p>
+    <p class="tags">{{ p.stack | join(", ") }}</p>
+    <div class="card-actions">
+      <a href="/project/{{ p.id }}" class="link">Details</a>
+      {% if p.github %}<a href="{{ p.github }}" target="_blank" class="link">GitHub</a>{% endif %}
+    </div>
+  </article>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{{ title if title else "INDRAJEET Portfolio" }}</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a href="/" class="brand">INDRAJEET — AI/ML Engineer</a>
+        <nav>
+          <a href="/">Home</a>
+          <a href="/projects">Projects</a>
+          <a href="/blog">Blog</a>
+          <a href="/about">About</a>
+          <a href="/contact" class="cta">Contact</a>
+           <a href="https://youtube.com/@rich_0855?si=w7DeJi2wQw6m1GTO" 
+             target="_blank" 
+             title="Visit my YouTube channel"
+             class="youtube-link">
+            <i class="fa-brands fa-youtube"></i> YouTube
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+         <p>&copy; {{ current_year() }} Indrajeet Kumbhar — Built with ❤️ using FastAPI</p>
+      </div>
+    </footer>
+
+    <script>
+    // small helper to post contact forms via fetch if used
+    async function postJSON(url, data) {
+      const r = await fetch(url, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+      });
+      return r.json();
+    }
+    </script>
+  </body>
+</html>

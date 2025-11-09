@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Blog</h2>
+<ul class="blog-list">
+  {% for post in posts %}
+  <li><a href="/blog/{{ post.filename }}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}

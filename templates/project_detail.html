@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="card">
+  <h2>{{ project.title }}</h2>
+  <p>{{ project.summary }}</p>
+  <p><strong>Stack:</strong> {{ project.stack | join(", ") }}</p>
+  {% if project.demo %}
+    <p><a href="{{ project.demo }}" target="_blank">Live demo</a></p>
+  {% endif %}
+  {% if project.github %}
+    <p><a href="{{ project.github }}" target="_blank">View on GitHub</a></p>
+  {% endif %}
+  <a href="/projects" class="btn small">Back to Projects</a>
+</article>
+{% endblock %}

@@ -1,0 +1,246 @@
+/* ========== Global Styles ========== */
+:root {
+  --bg-color: #f8f9fb;
+  --text-color: #222;
+  --accent-color: #0078ff;
+  --secondary-color: #555;
+  --border-radius: 10px;
+  --container-width: 1100px;
+  --font-primary: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-primary);
+  background: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* ========== Layout Containers ========== */
+.container {
+  width: 90%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+/* ========== Header ========== */
+.site-header {
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.site-header .brand {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+.site-header nav {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.site-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.site-header nav a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.site-header nav a:hover {
+  color: var(--accent-color);
+}
+
+.site-header nav a.cta {
+  background: var(--accent-color);
+  color: #fff;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.site-header nav a.cta:hover {
+  background: #005ecb;
+}
+
+/* ========== Hero Section ========== */
+.hero {
+  background: linear-gradient(120deg, #e8f0ff, #f8fbff);
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.hero-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.hero img.profile-photo {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.hero h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.hero .accent {
+  color: var(--accent-color);
+}
+
+.hero .lead {
+  color: var(--secondary-color);
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+.hero-ctas {
+  margin-top: 1.2rem;
+}
+
+.hero .btn {
+  display: inline-block;
+  background: var(--accent-color);
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  font-weight: 600;
+  margin-right: 0.6rem;
+  transition: background 0.3s ease;
+}
+
+.hero .btn.secondary {
+  background: #fff;
+  color: var(--accent-color);
+  border: 2px solid var(--accent-color);
+}
+
+.hero .btn:hover {
+  background: #005ecb;
+}
+
+/* ========== Section Titles ========== */
+h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  color: var(--text-color);
+}
+
+/* ========== Grid & Cards ========== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: var(--accent-color);
+}
+
+.card .tags {
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+  margin: 0.6rem 0;
+}
+
+.card-actions {
+  margin-top: 1rem;
+}
+
+.card-actions .link {
+  color: var(--accent-color);
+  font-weight: 600;
+  text-decoration: none;
+  margin-right: 1rem;
+}
+
+.card-actions .link:hover {
+  text-decoration: underline;
+}
+
+/* ========== Footer ========== */
+.site-footer {
+  text-align: center;
+  padding: 2rem 0;
+  background: #fff;
+  border-top: 1px solid #eee;
+  color: var(--secondary-color);
+  margin-top: 3rem;
+}
+
+.site-footer p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* ============================
+   YOUTUBE LINK STYLE
+============================ */
+.youtube-link {
+  color: #ff0000;
+  font-weight: 600;
+  margin-left: 10px;
+  text-decoration: none;
+}
+
+.youtube-link:hover {
+  text-decoration: underline;
+  color: #cc0000;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 768px) {
+  .site-header nav {
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .hero-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero img.profile-photo {
+    width: 150px;
+    height: 150px;
+  }
+}

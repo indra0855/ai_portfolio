@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="card">
+  <h2>{{ post.title }}</h2>
+  <div class="blog-content">
+    {{ post.html | safe }}
+  </div>
+  <a href="/blog" class="btn small">Back to blog</a>
+</article>
+{% endblock %}

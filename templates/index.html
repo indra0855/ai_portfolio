@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-inner" style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
+    
+    <!-- 👇 Your Photo -->
+    <img src="/static/indra.jpg" 
+         alt="Indrajeet Kumbhar" 
+         class="profile-photo" 
+         style="width: 180px; height: 180px; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" />
+
+    <!-- 👇 Intro Text -->
+    <div>
+      <h1>Hi — I'm <span class="accent">INDRAJEET KUMBHAR</span></h1>
+      <p class="lead">
+        AI / ML Engineer — Building production-ready ML systems, APIs, and intelligent apps.
+      </p>
+      <div class="hero-ctas" style="margin-top: 1rem;">
+        <a href="/projects" class="btn">View Projects</a>
+        <a href="/resume" class="btn secondary">Download Resume</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>Featured Projects</h2>
+  <div class="grid">
+    {% for p in featured %}
+    <article class="card">
+      <h3>{{ p.title }}</h3>
+      <p>{{ p.summary }}</p>
+      <p class="tags">{{ p.stack | join(", ") }}</p>
+      <div class="card-actions">
+        <a href="/project/{{ p.id }}" class="link">Details</a>
+        {% if p.github %}
+        <a href="{{ p.github }}" target="_blank" class="link">GitHub</a>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}
