@@ -5,4 +5,5 @@ python-multipart
 aiofiles
 markdown
 pydantic[email]  # Includes email validation
-python-dotenv    # For loading environment variables
+python-dotenv  
+httpx  # For loading environment variables
