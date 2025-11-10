@@ -4,4 +4,5 @@ jinja2
 python-multipart
 aiofiles
 markdown
-pydantic
+pydantic[email]  # Includes email validation
+python-dotenv    # For loading environment variables

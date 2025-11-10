@@ -16,5 +16,15 @@
             "github": "https://github.com/your-username/fake-news-bert",
             "demo": "",
             "image": ""
+        },
+
+  {
+            "id": "rag_llm_demo",
+            "title": "RAG LLM Demo",
+            "summary": "A lightweight, CPU-only Retrieval-Augmented Generation system that answers questions using local documents via semantic search and text generation.",
+            "stack": ["Python", "Flask", "FAISS", "Sentence-Transformers", "Hugging Face Transformers", "Flan-T5"],
+            "github": "https://github.com/your-username/small-rag-demo",
+            "demo": "",
+            "image": ""
         }
 ]

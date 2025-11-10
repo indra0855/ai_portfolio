@@ -2,13 +2,25 @@ from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse, FileResponse, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import List
 import json
 import os
 import uuid
 import markdown
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from datetime import datetime
+from dotenv import load_dotenv
+import os
+load_dotenv()
+# Email Configuration
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+NOTIFICATION_EMAIL = "indrajeetkumbhar23121@gmail.com"  # Your Gmail address to receive notifications
+SMTP_USERNAME = "indrajeetkumbhar23121@gmail.com"  # Your Gmail address
+SMTP_PASSWORD =os.getenv("emailpassword")  # Set this environment variable securely
 
 # ---------- Paths ----------
 BASE_DIR = os.path.dirname(__file__)
@@ -40,10 +52,10 @@ if not os.path.exists(PROJECTS_JSON):
             "image": ""
         },
         {
-            "id": "ai-art-generator",
-            "title": "AI Art Generator",
-            "summary": "A text-to-image AI that turns any description into digital art.",
-            "stack": ["Streamlit, Diffusers, PyTorch, Transformers"],
+            "id": "fake-news-bert",
+            "title": "Fake News Detection (BERT)",
+            "summary": "Fine-tuned BERT model to detect fake news articles.",
+            "stack": ["Hugging Face", "Transformers", "PyTorch", "FastAPI"],
             "github": "https://github.com/your-username/fake-news-bert",
             "demo": "",
             "image": ""
@@ -69,6 +81,72 @@ templates.env.globals["current_year"] = get_current_year
 
 
 # ---------- Helper Functions ----------
+def send_notification_email(subject: str, body: str, from_email: str = None):
+    """Send an email notification using configured SMTP settings"""
+    if not SMTP_PASSWORD:
+        error_msg = """
+        EMAIL_PASSWORD environment variable not set!
+        
+        To fix this:
+        1. Generate a Gmail App Password:
+           - Go to https://myaccount.google.com/security
+           - Enable 2-Step Verification if not enabled
+           - Go to 'App passwords' under 2-Step Verification
+           - Select 'Mail' and 'Windows Computer'
+           - Click 'Generate' to get a 16-character password
+        
+        2. Set the environment variable:
+           In PowerShell, run:
+           $env:EMAIL_PASSWORD = "your-16-character-app-password"
+        """
+        print(error_msg)
+        return False
+        
+    try:
+        print(f"Attempting to send email to {NOTIFICATION_EMAIL}")
+        msg = MIMEMultipart()
+        msg['From'] = SMTP_USERNAME  # Always use your Gmail address as sender
+        msg['To'] = NOTIFICATION_EMAIL
+        msg['Subject'] = subject
+        
+        # Add a more professional email body
+        email_body = f"""
+        New Contact Form Submission
+
+        {body}
+
+        ---
+        This is an automated notification from your portfolio website.
+        """
+        msg.attach(MIMEText(email_body, 'plain'))
+        
+        print("Connecting to Gmail SMTP server...")
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            print("Starting TLS encryption...")
+            server.starttls()
+            print("Attempting login...")
+            server.login(SMTP_USERNAME, SMTP_PASSWORD)
+            print("Sending email...")
+            server.send_message(msg)
+            print(f"✅ Email sent successfully to {NOTIFICATION_EMAIL}")
+        return True
+    except smtplib.SMTPAuthenticationError as auth_error:
+        print(f"""
+        ❌ Gmail authentication failed!
+        Error: {str(auth_error)}
+        
+        Common issues:
+        1. App Password not set correctly
+        2. Using regular Gmail password instead of App Password
+        3. 2-Step Verification not enabled
+        
+        Please follow the setup steps above to fix this.
+        """)
+        return False
+    except Exception as e:
+        print(f"❌ Failed to send email: {str(e)}")
+        return False
+
 def read_projects():
     with open(PROJECTS_JSON, "r", encoding="utf-8") as f:
         return json.load(f)
@@ -164,6 +242,14 @@ async def download_resume():
         raise HTTPException(status_code=404, detail="Resume not found. Place `resume.pdf` in static/ directory.")
     return FileResponse(resume_path, media_type="application/pdf", filename="resume.pdf")
 
+
+# New: Render an embedded resume viewer page so users can view the PDF in-browser
+@app.get("/resume/view", response_class=HTMLResponse)
+async def resume_view(request: Request):
+    resume_path = "/static/resume.pdf"
+    # The template will embed the PDF using <embed> or provide a download fallback
+    return templates.TemplateResponse("resume.html", {"request": request, "resume_path": resume_path})
+
 @app.get("/contact", response_class=HTMLResponse)
 async def contact_get(request: Request):
     return templates.TemplateResponse("contact.html", {"request": request})
@@ -172,7 +258,7 @@ async def contact_get(request: Request):
 # ---------- API Endpoints ----------
 class ContactIn(BaseModel):
     name: str
-    email: str
+    email: EmailStr  # This adds email validation
     message: str
 
 @app.post("/api/contact")
@@ -185,7 +271,24 @@ async def api_contact(contact: ContactIn):
         "received_at": datetime.utcnow().isoformat() + "Z",
     }
     append_message(msg)
-    return {"status": "ok", "message": "Message received"}
+    
+    # Send email notification
+    subject = f"New Contact Form Message from {contact.name}"
+    body = f"""New message received from your portfolio website:
+    
+Name: {contact.name}
+Email: {contact.email}
+Message:
+{contact.message}
+
+Sent at: {msg['received_at']}
+"""
+    email_sent = send_notification_email(subject, body, contact.email)
+    
+    return {
+        "status": "ok", 
+        "message": "Message received and notification sent" if email_sent else "Message received but notification failed"
+    }
 
 @app.get("/api/projects")
 async def api_projects():
@@ -217,3 +320,29 @@ async def api_messages():
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+# Test email endpoint (remove in production)
+@app.get("/api/test-email")
+async def test_email():
+    """Test the email configuration"""
+    if not SMTP_PASSWORD:
+        return {
+            "status": "error",
+            "message": "EMAIL_PASSWORD not set. Please set it first."
+        }
+    
+    success = send_notification_email(
+        "Test Email from Portfolio Website",
+        "This is a test email to verify your email configuration is working correctly."
+    )
+    
+    if success:
+        return {
+            "status": "success",
+            "message": "Test email sent successfully! Check your inbox."
+        }
+    else:
+        return {
+            "status": "error",
+            "message": "Failed to send test email. Check the server logs for details."
+        }
